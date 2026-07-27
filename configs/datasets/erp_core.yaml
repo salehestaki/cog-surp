@@ -1,0 +1,10 @@
+schema_version: 1
+dataset_id: erp-core-n400
+source:
+  project_url: https://erpinfo.org/erp-core
+  repository_url: https://osf.io/29xpq/
+  doi: 10.18115/D5JW4R
+  license: CC-BY-SA-4.0
+task: N400
+data_status: real
+

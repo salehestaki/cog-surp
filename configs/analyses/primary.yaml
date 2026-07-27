@@ -1,0 +1,14 @@
+schema_version: 1
+status: preregistered-primary
+dataset_id: erp-core-n400
+contrast:
+  treatment: unrelated
+  control: related
+outcome: n400_mean_voltage_uv
+sign_convention: "Negative coefficients mean a larger (more negative) N400."
+n400_window_s: [0.3, 0.5]
+roi_channels: [Cz, CPz]
+probability_strategy: boundary-aware
+validation:
+  - leave-items-out
+  - leave-participants-out

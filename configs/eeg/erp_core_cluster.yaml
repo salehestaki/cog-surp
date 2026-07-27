@@ -1,0 +1,7 @@
+schema_version: 1
+analysis_status: exploratory
+data_status: real
+n_permutations: 512
+random_seed: 20260727
+time_window_s: [0.0, 0.8]
+cluster_alpha: 0.05

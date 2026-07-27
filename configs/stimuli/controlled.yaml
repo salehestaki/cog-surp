@@ -1,0 +1,48 @@
+schema_version: 1
+seed: 20260727
+items:
+  - item_id: selectional-001
+    anomaly_family: selectional-restriction
+    context_text: "The mechanic repaired the"
+    control_target: "engine"
+    manipulated_target: "sunset"
+  - item_id: association-001
+    anomaly_family: unrelated-prime-target
+    context_text: "The prime was doctor and the target was"
+    control_target: "nurse"
+    manipulated_target: "butter"
+  - item_id: knowledge-001
+    anomaly_family: world-knowledge
+    context_text: "Water freezes at zero degrees"
+    control_target: "Celsius"
+    manipulated_target: "boiling"
+  - item_id: role-001
+    anomaly_family: thematic-role-reversal
+    context_text: "At the restaurant, the hungry customer"
+    control_target: "ordered"
+    manipulated_target: "served"
+  - item_id: discourse-001
+    anomaly_family: discourse-inconsistency
+    context_text: "Mina said she had never owned a pet. Later she fed her"
+    control_target: "neighbor"
+    manipulated_target: "dog"
+  - item_id: negation-001
+    anomaly_family: negation-sensitive
+    context_text: "The hiker was not able to cross the flooded"
+    control_target: "river"
+    manipulated_target: "desert"
+  - item_id: syntax-001
+    anomaly_family: syntactic-control
+    context_text: "Every morning the baker"
+    control_target: "kneads"
+    manipulated_target: "knead"
+  - item_id: expectation-001
+    anomaly_family: plausible-unexpected
+    context_text: "To make tea, Arun heated the"
+    control_target: "water"
+    manipulated_target: "kettle"
+  - item_id: implausible-001
+    anomaly_family: implausible-unexpected
+    context_text: "To make tea, Arun heated the"
+    control_target: "water"
+    manipulated_target: "cloud"

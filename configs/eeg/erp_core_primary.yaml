@@ -1,0 +1,32 @@
+schema_version: 1
+dataset_id: erp-core-n400
+preprocessing_run_name: primary-ica-ev1-v1
+analysis_status: primary
+artifact_correction: ica
+line_frequency_hz: 60
+high_pass_hz: 0.1
+low_pass_hz: 30.0
+resample_hz: 256
+reference: average
+ica_random_state: 20260727
+ica_n_components: 20
+ica_decim: 3
+ica_eog_threshold: 3.0
+bad_channel_z_threshold: 5.0
+maximum_interpolated_channels: 4
+interpolation_origin_m: [0.0, 0.0, 0.04]
+epoch:
+  tmin_s: -0.2
+  tmax_s: 0.8
+  baseline_s: [-0.2, 0.0]
+n400:
+  window_s: [0.3, 0.5]
+  roi_channels: [CPz]
+exclusions:
+  dataset_defined_participants: true
+  reject_peak_to_peak_uv: 200
+  reject_eog_peak_to_peak_uv: 100
+  eog_rejection_window_s: [-0.2, 0.2]
+  max_rejected_fraction: 0.25
+  min_accepted_trials_per_condition: 30
+  min_behavior_accuracy: 0.75

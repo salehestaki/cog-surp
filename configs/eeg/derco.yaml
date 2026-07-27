@@ -1,0 +1,10 @@
+schema_version: 1
+dataset_id: derco
+preprocessing_run_name: derco-publisher-epochs-n400-v1
+analysis_status: primary
+source_preprocessing: publisher-preprocessed
+baseline_s: [-0.2, 0.0]
+n400_window_s: [0.3, 0.5]
+roi_channels: [Cz, CP1, CP2, Pz]
+excluded_participants: [QPF42, USQ95]
+publisher_excluded_participant_count: 2

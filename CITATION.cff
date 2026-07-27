@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: Cog-Surp
+message: "If you use Cog-Surp, cite this software and each dataset/model listed in the run manifest."
+type: software
+authors:
+  - name: Cog-Surp contributors
+version: 0.1.0
+date-released: 2026-07-27
+license: Apache-2.0
+keywords:
+  - N400
+  - EEG
+  - surprisal
+  - psycholinguistics
+preferred-citation:
+  type: article
+  title: "ERP CORE: An open resource for human event-related potential research"
+  authors:
+    - family-names: Kappenman
+      given-names: Emily S.
+    - family-names: Farrens
+      given-names: Jaclyn L.
+    - family-names: Zhang
+      given-names: Wendy
+    - family-names: Stewart
+      given-names: Andrew X.
+    - family-names: Luck
+      given-names: Steven J.
+  journal: NeuroImage
+  year: 2021
+  doi: 10.1016/j.neuroimage.2020.117465

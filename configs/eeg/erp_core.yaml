@@ -1,0 +1,20 @@
+schema_version: 1
+dataset_id: erp-core-n400
+preprocessing_run_name: smoke-v1
+analysis_status: smoke-nonconfirmatory
+artifact_correction: none
+line_frequency_hz: 60
+high_pass_hz: 0.1
+low_pass_hz: 30.0
+resample_hz: 256
+reference: average
+epoch:
+  tmin_s: -0.5
+  tmax_s: 1.5
+  baseline_s: [-0.2, 0.0]
+n400:
+  window_s: [0.3, 0.5]
+  roi_channels: [Cz, CPz]
+exclusions:
+  dataset_defined_participants: true
+  reject_peak_to_peak_uv: 200

@@ -1,0 +1,31 @@
+schema_version: 1
+canonical_surprisal_unit: nats
+primary_probability_strategy: boundary-aware
+models:
+  - role: cpu-smoke
+    repository_id: HuggingFaceTB/SmolLM2-135M
+    revision: 93efa2f097d58c2a74874c7e644dbc9b0cee75a2
+    kind: base
+    family: smollm2
+    license: Apache-2.0
+    dtype: float32
+    quantization: none
+    parameters: 134515008
+  - role: cross-family
+    repository_id: Qwen/Qwen2.5-0.5B
+    revision: 060db6499f32faf8b98477b0a26969ef7d8b9987
+    kind: base
+    family: qwen2.5
+    license: Apache-2.0
+    dtype: float32
+    quantization: none
+    parameters: 494032768
+  - role: legacy-anchor
+    repository_id: openai-community/gpt2
+    revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+    kind: base
+    family: gpt2
+    license: MIT
+    dtype: float32
+    quantization: none
+    parameters: 137022720

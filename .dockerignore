@@ -1,0 +1,14 @@
+.git
+.venv
+.tmp
+artifacts
+data/raw
+data/cache
+data/derivatives
+__pycache__
+.pytest_cache
+.ruff_cache
+.mypy_cache
+*.nc
+*.fif
+*.set

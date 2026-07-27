@@ -1,0 +1,13 @@
+schema_version: 1
+dataset_id: derco
+source:
+  project_url: https://github.com/Tayerquach/DERCo
+  repository_url: https://osf.io/rkqbu/
+  doi: 10.17605/OSF.IO/RKQBU
+  license: NOASSERTION
+  license_note: >-
+    The OSF project does not declare a dataset license. The associated article
+    is CC BY 4.0, but that is not treated as a dataset license. Analyze locally;
+    do not redistribute.
+data_status: real
+role: word-aligned-h3-candidate
