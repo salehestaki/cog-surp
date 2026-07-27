@@ -1,9 +1,15 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pandas as pd
 import pytest
 
-from cog_surp.analysis.model_effect import matched_target_effect
+from cog_surp.analysis.model_effect import (
+    analyze_model_condition_effects,
+    matched_target_effect,
+)
 
 
 def _fixture() -> pd.DataFrame:
@@ -43,3 +49,27 @@ def test_matched_target_effect_rejects_unpaired_items() -> None:
 
     with pytest.raises(ValueError, match="both condition"):
         matched_target_effect(frame)
+
+
+def test_three_model_analysis_reports_all_pairwise_correlations(
+    tmp_path: Path,
+) -> None:
+    paths = []
+    for index, scale in enumerate((1.0, 2.0, -1.0)):
+        frame = _fixture().copy()
+        frame["model_id"] = f"fixture/model-{index}"
+        frame["target_surprisal_nats"] *= scale
+        path = tmp_path / f"model-{index}.parquet"
+        frame.to_parquet(path, index=False)
+        paths.append(path)
+
+    artifacts = analyze_model_condition_effects(
+        surprisal_paths=paths,
+        output_dir=tmp_path / "output",
+        run_id="model-effect-fixture",
+    )
+    summary = json.loads(artifacts.summary_json.read_text(encoding="utf-8"))
+
+    assert summary["schema_version"] == 2
+    assert len(summary["pairwise_effect_correlations"]) == 3
+    assert "cross_model_effect_pearson" not in summary

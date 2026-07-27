@@ -65,6 +65,10 @@ The ERP CORE H2 analysis scores publisher stimuli but cannot link those words
 to an individual participant's randomized trials. H1 and H2 are therefore
 separate estimands over the same manipulation, not a trial-level mediation
 analysis. Their parallel direction does not identify a surprisal-to-N400 path.
+The third-family Qwen2.5-0.5B result is available for H2 only. A full
+growing-context DERCo pass was deliberately abandoned after a batch-one CPU
+attempt remained impractical and produced no complete artifact; it is not
+counted as H3 evidence.
 
 DoWhy identifies and perturbs the randomized condition effects under the
 encoded graph. Refuters are stress tests of particular assumptions and data

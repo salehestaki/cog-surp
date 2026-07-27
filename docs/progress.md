@@ -144,3 +144,19 @@
 - Refreshed implementation-hash-dependent H1 as
   `eeg-cohort-f1a3d5d14adf`; its scientific estimates are identical to the
   prior run.
+- Bounded the third-family scale check after a full-story Qwen CPU attempt
+  proved impractical at batch size one and produced no promotable artifact.
+  Pinned Qwen2.5-0.5B scored all 200 short ERP CORE condition sequences in 33
+  seconds as `lm-cross-family-59b0da516c20`.
+- Three-model H2 run `model-effect-67ae1006277c` estimates the Qwen
+  unrelated-minus-related effect at 3.517 nats (95% interval 2.606 to 4.428).
+  Pairwise item-effect correlations are 0.606 (SmolLM2/GPT-2), 0.697
+  (SmolLM2/Qwen), and 0.536 (GPT-2/Qwen).
+- Corrected the H2 summary schema to report every model pair instead of
+  silently repeating the first pair's correlation when more than two models
+  are supplied.
+- Generated integrated real-data report `report-8562aac501a7` from the current
+  H1, three-model H2, H3/H4, causal, cluster, and robustness artifacts.
+- Final local release gates pass: Ruff format/check, strict mypy over 45 source
+  files, 54 pytest tests, six Streamlit tabs with zero exceptions, source and
+  wheel builds, and a base-only isolated wheel doctor check with `ok: true`.

@@ -12,11 +12,12 @@ Repository: `D:\Saleh`, branch `main`
   contrast is -3.669 microvolts, 95% interval [-4.319, -3.019]. The all-39
   sensitivity estimate is -5.323 microvolts, [-8.556, -2.090]. Negative
   values mean a larger N400 for unrelated targets.
-- **H2, matched model response:** `model-effect-553f5f5b92e8` evaluates the
-  same 100 ERP CORE targets with exact teacher-forced probabilities. The
-  unrelated-minus-related effect is 3.057 nats [2.355, 3.759] for pinned
-  SmolLM2-135M and 1.628 [1.127, 2.129] for pinned GPT-2; item effects
-  correlate at 0.606. These are model-behavior results, not brain effects.
+- **H2, matched model response:** `model-effect-67ae1006277c` evaluates the
+  same 100 ERP CORE targets with exact teacher-forced probabilities.
+  Unrelated-minus-related effects are 3.057 nats [2.355, 3.759] for pinned
+  SmolLM2-135M, 1.628 [1.127, 2.129] for pinned GPT-2, and 3.517 [2.606,
+  4.428] for pinned Qwen2.5-0.5B. Pairwise item-effect correlations range
+  from 0.536 to 0.697. These are model-behavior results, not brain effects.
 - **H3, naturalistic alignment:** DERCo article 0 supplies authoritative
   publisher `WordID` linkage for 9,029 observations, 20 participants, and 559
   scored items. The converged crossed Bayesian SmolLM2 run
@@ -33,8 +34,10 @@ Repository: `D:\Saleh`, branch `main`
   at 0.932 and their conditional coefficients are -0.215 and -0.217
   microvolts/SD with overlapping intervals. Probability-strategy run
   `strategy-bcec8b5dc577` finds exact equality between boundary-aware and
-  subtoken-sum scoring on this fixture only. A pinned Qwen2.5-0.5B CPU run is
-  being executed as the additional family/scale check.
+  subtoken-sum scoring on this fixture only. Pinned Qwen2.5-0.5B run
+  `lm-cross-family-59b0da516c20` adds a third family and larger scale for the
+  controlled H2 comparison; it is not presented as a third full-article H3
+  model.
 
 ## Completed engineering and audit layers
 
@@ -82,8 +85,13 @@ Repository: `D:\Saleh`, branch `main`
 
 ## Final release gates
 
-The remaining gates are to finish or explicitly bound the active Qwen CPU
-robustness run, regenerate the integrated report and provenance snapshot from
-the latest artifacts, run the complete test/dashboard suite, and create the
-first local source commit. Remote CI and image-registry publication require an
-external remote and are outside this workspace.
+Integrated report `report-8562aac501a7` consumes the current three-model H2
+and causal artifacts. Final local validation passes: Ruff format/check, strict
+mypy over 45 source files, 54 pytest tests, a six-tab Streamlit AppTest with
+zero exceptions, source/wheel builds, and a base-only isolated wheel
+installation whose machine-readable doctor result is `ok: true`.
+
+The source has a local Git history and ignored raw data, model weights, and
+generated runs remain outside version control. Remote CI execution,
+image-registry publication, and the locally inaccessible Docker engine require
+external infrastructure; they do not block the validated Python release.

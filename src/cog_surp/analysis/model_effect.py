@@ -123,9 +123,17 @@ def analyze_model_condition_effects(
             on="item",
             validate="one_to_one",
         )
-    correlation = float(comparison[model_ids].corr().iloc[0, 1])
+    correlation_matrix = comparison[model_ids].corr()
+    pairwise_correlations = [
+        {
+            "model_a": model_ids[left],
+            "model_b": model_ids[right],
+            "pearson": float(correlation_matrix.iloc[left, right]),
+        }
+        for left in range(len(model_ids))
+        for right in range(left + 1, len(model_ids))
+    ]
     for summary in summaries:
-        summary["cross_model_effect_pearson"] = correlation
         summary["data_status"] = "real-stimulus-metadata"
         summary["analysis_status"] = "primary-model-side"
 
@@ -141,12 +149,12 @@ def analyze_model_condition_effects(
     summary_json.write_text(
         json.dumps(
             {
-                "schema_version": 1,
+                "schema_version": 2,
                 "run_id": run_id,
                 "hypothesis": "H2",
                 "contrast": "unrelated-minus-related",
                 "models": summaries,
-                "cross_model_effect_pearson": correlation,
+                "pairwise_effect_correlations": pairwise_correlations,
                 "interpretation_boundary": (
                     "This is a condition effect on deterministic model scores. "
                     "It is separate from the human EEG effect and does not "

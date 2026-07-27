@@ -116,6 +116,17 @@ causal effect of model surprisal.
             f"n={model['n_matched_targets']} matched targets)."
             for model in h2["models"]
         )
+        if "pairwise_effect_correlations" in h2:
+            correlation_lines = "\n".join(
+                f"- {pair['model_a']} versus {pair['model_b']}: "
+                f"Pearson r={pair['pearson']:.3f}."
+                for pair in h2["pairwise_effect_correlations"]
+            )
+        else:
+            correlation_lines = (
+                "- The two-model item-effect Pearson correlation was "
+                f"{h2['cross_model_effect_pearson']:.3f}."
+            )
         h2_section = f"""
 ## H2: model response to the controlled manipulation
 
@@ -125,10 +136,12 @@ unrelated-minus-related target-surprisal effects:
 {model_lines}
 
 Positive values mean unrelated primes increased model target surprisal. The
-item-level effects correlated at Pearson
-{h2["cross_model_effect_pearson"]:.3f} across these two model families. H2 is
-model behavior on matched text; its similarity in direction to H1 does not
-identify shared computation, mediation, or model-to-brain causation.
+pairwise item-effect correlations were:
+
+{correlation_lines}
+
+H2 is model behavior on matched text; its similarity in direction to H1 does
+not identify shared computation, mediation, or model-to-brain causation.
 """
     causal_section = ""
     if causal_path is not None:
@@ -141,7 +154,8 @@ Under the declared randomized-condition DAG, DoWhy identifies an empty
 backdoor adjustment set. Its trial-weighted A-to-Y estimate is
 {h1_causal["estimate"]:.3f} µV. Placebo, random-common-cause, data-subset,
 bootstrap, and simulated-unobserved-common-cause refuters were executed for H1
-and both H2 model effects. These perturbations probe named vulnerabilities;
+and all {len(causal["h2_condition_to_model_measure"])} H2 model effects. These
+perturbations probe named vulnerabilities;
 they neither prove the graph nor create an S-to-Y causal estimand.
 
 Graph-implied conditional-independence falsification was not executed because
