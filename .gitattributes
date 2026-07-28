@@ -1,0 +1,7 @@
+# Release-bundle checksums must survive Windows checkout unchanged.
+demo/bundle/**/*.json text eol=lf
+demo/bundle/**/*.svg text eol=lf
+demo/bundle/**/*.md text eol=lf
+demo/bundle/release-manifest.json text eol=lf
+demo/bundle/**/*.parquet binary
+demo/screenshots/**/*.png binary
