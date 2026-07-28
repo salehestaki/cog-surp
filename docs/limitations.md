@@ -93,6 +93,8 @@ validation and cannot support claims about human N400 effects.
 ## Runtime and packaging
 
 The base wheel passes an isolated Python 3.12 installation and doctor check.
-The local Docker daemon denies access to its Windows named pipe, so the
-provided pinned CPU image has not been built in this environment. No NVIDIA
-GPU is available, limiting scale robustness to bounded CPU checkpoints.
+The pinned, non-root CPU demo image builds and passes its documented smoke
+sequence, including a live Streamlit health check. It intentionally excludes
+the full EEG/model stack and is not evidence that GPU/CUDA execution works.
+No NVIDIA GPU is available, limiting scale robustness to bounded CPU
+checkpoints.

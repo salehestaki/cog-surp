@@ -53,7 +53,8 @@ All notable changes to Cog-Surp are documented here. The format follows
   Python 3.12 environments.
 - Synthetic and local empirical release manifests validated and rendered with
   zero Streamlit AppTest exceptions.
-- Docker daemon access was unavailable locally; exact external smoke commands
-  are documented and Docker validation is not claimed.
+- The non-root CPU/demo Docker image built successfully and passed doctor,
+  root help, eight manifest tests, demo validation, and a live Streamlit
+  health check.
 
 [0.1.0]: https://github.com/salehestaki/cog-surp/releases/tag/v0.1.0

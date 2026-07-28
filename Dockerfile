@@ -25,9 +25,12 @@ COPY configs ./configs
 COPY demo ./demo
 COPY tests ./tests
 
-# The locked all-extra environment keeps the complete CLI importable. Dev tools
-# are retained so the documented lightweight, offline smoke tests can run.
-RUN uv sync --locked --extra all \
+# The default image is intentionally CPU/demo focused. Dataframe, Parquet, and
+# dashboard extras are installed from the lock; model/EEG research stacks and
+# CUDA packages are not part of this lightweight public-demo image. Dev tools
+# remain available for the documented offline manifest smoke test.
+RUN uv sync --locked --extra data --extra dashboard \
+    && mkdir -p /workspace/artifacts \
     && chown -R cogsurp:cogsurp /workspace /home/cogsurp
 
 USER cogsurp

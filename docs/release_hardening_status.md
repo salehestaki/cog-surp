@@ -70,7 +70,7 @@ Initial worktree: clean
 - Unified manifest and manifest-only dashboard: **implemented and validated**
 - Committed dashboard tests: **validated**
 - Metadata/citation/license: **complete and validated**
-- Docker: **implemented and statically reviewed; build externally pending**
+- Docker: **built and validated as a non-root CPU/demo image**
 - Synthetic public demo: **implemented and validated**
 - CLI behavior: **compatible; release/dashboard commands decomposed**
 - Full Python gates: **83 tests, Ruff, mypy, wheel/sdist and clean installs pass**

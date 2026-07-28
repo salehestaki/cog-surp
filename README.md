@@ -10,6 +10,7 @@ causal-LM scoring, naturalistic EEG alignment, and explicit causal auditing.**
 [![CI](https://github.com/salehestaki/cog-surp/actions/workflows/ci.yml/badge.svg)](https://github.com/salehestaki/cog-surp/actions/workflows/ci.yml)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: Apache-2.0](https://img.shields.io/badge/Code-Apache--2.0-D22128.svg)](LICENSE)
+[![Docker validated](https://img.shields.io/badge/Docker-CPU%20validated-2496ED?logo=docker&logoColor=white)](docs/reproducibility.md#cpu-container)
 [![Real EEG](https://img.shields.io/badge/Evidence-Real%20EEG-16803C)](docs/scientific_scope.md)
 [![Reproducible](https://img.shields.io/badge/Artifacts-Checksummed-6F42C1)](docs/reproducibility.md)
 [![Scientific scope](https://img.shields.io/badge/Claims-Bounded-F59E0B)](docs/scientific_scope.md)
@@ -177,6 +178,26 @@ uv run cog-surp report validate-manifest \
 uv run cog-surp --help
 uv run cog-surp datasets list
 ```
+
+### 4. Run the Docker-validated CPU demo
+
+The default image intentionally installs only the locked data/dashboard and
+test dependencies required by the public demo; it does not download model
+weights, EEG data, PyTorch, or CUDA packages.
+
+```bash
+docker build -t cog-surp:0.1.0 .
+docker run --rm cog-surp:0.1.0 doctor
+docker run --rm cog-surp:0.1.0 report validate-manifest \
+  --manifest demo/bundle/release-manifest.json
+docker run --rm -p 8501:8501 cog-surp:0.1.0 app run \
+  --manifest demo/bundle/release-manifest.json
+```
+
+Open `http://localhost:8501`. The image and dashboard health endpoint were
+validated on Docker Desktop's Linux Engine; see
+[reproducibility](docs/reproducibility.md#cpu-container) for the full smoke
+sequence.
 
 > [!NOTE]
 > Public EEG data and model weights are intentionally not stored in Git.

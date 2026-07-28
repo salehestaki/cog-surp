@@ -68,8 +68,9 @@ removed with no fallback.
   also passed `cog-surp doctor --json`.
 - Synthetic and real manifest dashboard runs rendered all six tabs with zero
   exceptions.
-- Dockerfile static review passed, but local Windows Docker daemon access was
-  denied. The release does not claim a successful image build.
+- The non-root CPU/demo image built successfully and passed doctor, root help,
+  eight manifest tests, demo reuse/validation, and the live Streamlit health
+  endpoint.
 
 ## Known limitations
 
@@ -81,4 +82,5 @@ removed with no fallback.
   or neurobiological homology.
 - Sensor-time results are exploratory, not confirmatory timing or source
   localization.
-- Docker build/run verification remains external.
+- GPU/CUDA execution and image-registry publication remain optional and
+  unvalidated.

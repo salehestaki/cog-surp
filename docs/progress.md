@@ -191,5 +191,10 @@
   notes/checklist/changelog.
 - v0.1.0 Python release gates pass: 83 tests with no skips or failures, Ruff,
   strict mypy over 50 source files, wheel/sdist builds, isolated installs, and
-  base-wheel doctor. Docker daemon access remains externally pending and is
-  not claimed as validated.
+  base-wheel doctor.
+- Re-tested Docker through an elevated Docker Desktop Linux Engine session.
+  The first full-extra build exposed inappropriate CUDA downloads for a CPU
+  image, so the default image was narrowed to locked data/dashboard extras.
+  Image `cog-surp:0.1.0` then built successfully as non-root UID/GID 10001 and
+  passed doctor, help, eight manifest tests, demo validation, and a live
+  Streamlit health endpoint.

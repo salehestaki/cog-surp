@@ -78,8 +78,6 @@ Branch: `main`
 
 ## External constraints and deliberate boundaries
 
-- Docker CLI access to the local engine named pipe is denied, so the CPU image
-  cannot be built in this session; the wheel-based clean-install gate passes.
 - No NVIDIA GPU is available. Larger checkpoints are therefore bounded CPU
   robustness jobs rather than a broad scale sweep.
 - DERCo has no declared dataset license and is recorded as `NOASSERTION`; its
@@ -101,10 +99,11 @@ Final local validation passes: Ruff format/check, strict mypy over 50 source
 files, 83 pytest tests with no skips or failures, source/wheel builds, isolated
 wheel and sdist installations, and a base-only wheel machine-readable doctor
 result of `ok: true`. The committed synthetic demo and CI validation are part
-of the release gate.
+of the release gate. The non-root CPU demo image also builds successfully and
+passes doctor, help, manifest tests, demo validation, and a live Streamlit
+health check.
 
 The source has local and public GitHub history; ignored raw data, model weights,
 and generated runs remain outside version control. GitHub Actions exercises the
-locked CPU release gate. Image-registry publication and the locally
-inaccessible Docker engine require external infrastructure; they do not block
-the validated Python release, and no Docker-validated claim is made.
+locked CPU release gate. Registry publication remains optional; the local
+Docker image itself is validated.

@@ -62,14 +62,14 @@ raw EEG, model caches, credentials, or local scientific artifacts.
 Build and run the offline smoke sequence:
 
 ```bash
-docker build -t cog-surp:cpu .
-docker run --rm cog-surp:cpu
-docker run --rm cog-surp:cpu --help
-docker run --rm --entrypoint pytest cog-surp:cpu \
+docker build -t cog-surp:0.1.0 .
+docker run --rm cog-surp:0.1.0
+docker run --rm cog-surp:0.1.0 --help
+docker run --rm --entrypoint pytest cog-surp:0.1.0 \
   tests/unit/test_release_manifest.py -q
-docker run --rm cog-surp:cpu report validate-manifest \
+docker run --rm cog-surp:0.1.0 report validate-manifest \
   --manifest demo/bundle/release-manifest.json
-docker run --rm -p 8501:8501 cog-surp:cpu app run \
+docker run --rm -p 8501:8501 cog-surp:0.1.0 app run \
   --manifest demo/bundle/release-manifest.json
 ```
 
@@ -78,7 +78,18 @@ Open `http://localhost:8501` for the final command. Mount `data` and
 A CUDA image is not claimed because this host has no GPU and the CUDA
 inference path has not been validated.
 
-On 2026-07-28 the local Docker client could not access the Windows named-pipe
-daemon, so these exact image commands remain externally pending. The
-Dockerfile is provided and statically reviewed; this repository does not claim
-the image is Docker-validated until those commands succeed.
+This sequence was executed successfully on 2026-07-28 with Docker Desktop
+4.80.0 and Linux Engine 29.6.1. The resulting `cog-surp:0.1.0` image:
+
+- has image ID
+  `sha256:958aea9a7d230e1e88e9daaa0574d6ccb2b5350a909bc6d50564024e77b6873a`;
+- is 559,227,888 bytes;
+- runs as UID/GID 10001 (`cogsurp`);
+- passed the doctor and root-help commands;
+- passed all eight release-manifest unit tests inside the container;
+- validated the committed 18-artifact synthetic manifest; and
+- served the dashboard successfully at `/_stcore/health`.
+
+The default image is CPU/demo-focused: only the locked `data` and `dashboard`
+extras are included. Full EEG preprocessing and language-model scoring remain
+host workflows installed with `uv sync --locked --extra all`.

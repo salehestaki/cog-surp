@@ -16,7 +16,8 @@ Verified on 2026-07-28.
 - [x] Ruff lint and format checks pass.
 - [x] Streamlit AppTests pass for all six sections.
 - [x] Missing, corrupt, unsafe, and lineage-mismatched manifests are rejected.
-- [ ] Docker image build/run — local daemon access denied; commands documented.
+- [x] Non-root CPU Docker image builds; doctor, help, manifest tests, demo
+  validation, and live dashboard health check pass.
 - [x] Synthetic demo builds, validates, and renders without model/data download.
 - [x] Real/synthetic/mixed status contracts reviewed and regression-tested.
 - [x] README commands and one-minute project narrative reviewed.
@@ -27,5 +28,4 @@ Verified on 2026-07-28.
 - [x] Local empirical release bundle generated and validated without committing
   restricted artifacts.
 
-Docker verification is a P1 external check rather than a P0 Python-release
-claim. No checkbox is marked complete for it.
+The optional CUDA/GPU image and registry publication remain out of scope.
