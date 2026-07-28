@@ -30,6 +30,10 @@ def test_synthetic_demo_is_deterministic_and_self_validating(
     report_text = report.read_text(encoding="utf-8")
     assert first.release_id in report_text
     assert "NOT HUMAN EVIDENCE" in report_text
+    for artifact in first.artifacts:
+        artifact_path = first_path.parent / artifact.path
+        if artifact_path.suffix in {".json", ".md", ".svg"}:
+            assert b"\r\n" not in artifact_path.read_bytes()
 
 
 def test_demo_refuses_to_overwrite_partial_output(tmp_path: Path) -> None:

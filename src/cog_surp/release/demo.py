@@ -401,7 +401,7 @@ def build_synthetic_demo(
         }
         for artifact_type, svg_value in svg_values.items():
             path = artifacts_dir / f"{artifact_type.value}.svg"
-            path.write_text(svg_value, encoding="utf-8")
+            path.write_bytes(svg_value.encode("utf-8"))
             written[artifact_type] = path
 
         identity = {
@@ -439,7 +439,7 @@ The release manifest records the code revision, every artifact checksum,
 synthetic status, run lineage, model fixture identity, and this report.
 """
         report_path = artifacts_dir / "report.md"
-        report_path.write_text(report, encoding="utf-8")
+        report_path.write_bytes(report.encode("utf-8"))
         written[ArtifactType.REPORT] = report_path
 
         runs = RunLineage(
