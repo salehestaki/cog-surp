@@ -2,7 +2,8 @@
 
 Verified on 2026-07-28.
 
-- [ ] Repository clean — complete after the final release commit and push.
+- [x] Repository clean after the final release commit (generated scientific
+  runs remain ignored by design).
 - [x] Metadata and real author/contact/ORCID information complete.
 - [x] No release placeholders remain.
 - [x] Full unmodified Apache License 2.0 terms and project `NOTICE` present.

@@ -44,6 +44,8 @@ uv run cog-surp demo build
 uv run cog-surp app run --manifest demo/bundle/release-manifest.json
 ```
 
+![Synthetic Cog-Surp demo overview with an explicit not-human-evidence banner](demo/screenshots/demo-overview.png)
+
 ### Full empirical pipeline — public EEG and model downloads required
 
 The verified findings and screenshots below come from checksummed real ERP

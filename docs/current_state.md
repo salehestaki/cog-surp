@@ -93,9 +93,9 @@ Branch: `main`
 ## Final release gates
 
 Integrated report `report-8562aac501a7` consumes the current three-model H2
-and causal artifacts. The coherent local empirical bundle
-`release-77c40f8daae4` contains 18 checksummed current artifacts and renders
-all six Streamlit tabs with `REAL HUMAN EEG` and zero exceptions.
+and causal artifacts. The coherent local empirical release configuration
+builds 18 checksummed current artifacts and renders all six Streamlit tabs
+with `REAL HUMAN EEG` and zero exceptions.
 
 Final local validation passes: Ruff format/check, strict mypy over 50 source
 files, 83 pytest tests with no skips or failures, source/wheel builds, isolated

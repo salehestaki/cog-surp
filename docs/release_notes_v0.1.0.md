@@ -35,9 +35,10 @@ their stage-artifact lineage:
 - DERCo H3: -0.215 µV/SD, 95% HDI [-0.369, -0.055], interpreted as a
   conditional association with weak practical held-out prediction.
 
-The local empirical bundle `release-77c40f8daae4` validates the current H1,
-H2, H3/H4/H5, causal, cluster, and integrated-report artifact family. It is
-not committed because DERCo redistribution terms are `NOASSERTION`.
+The local empirical release configuration validates the current H1, H2,
+H3/H4/H5, causal, cluster, and integrated-report artifact family. Generated
+real bundles are not committed because DERCo redistribution terms are
+`NOASSERTION`.
 
 ## Migration
 

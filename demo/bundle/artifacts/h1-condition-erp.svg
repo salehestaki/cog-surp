@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420"
+viewBox="0 0 960 420" role="img" aria-label="Synthetic N400 condition waveforms">
+<rect width="960" height="420" fill="#fbfbfd"/>
+<text x="48" y="52" font-family="sans-serif" font-size="25"
+ fill="#202938">Synthetic N400 condition waveforms</text>
+<rect x="48" y="72" width="864" height="38" rx="8" fill="#fff1c2"/>
+<text x="64" y="98" font-family="sans-serif" font-size="16"
+ fill="#6b4f00">SYNTHETIC TEST/DEMO DATA — NOT HUMAN EVIDENCE</text>
+
+<line x1="80" y1="300" x2="890" y2="300" stroke="#6b7280"/>
+<line x1="220" y1="130" x2="220" y2="330" stroke="#6b7280"/>
+<rect x="450" y="125" width="145" height="180" fill="#e5e7eb" opacity=".65"/>
+<path d="M80 260 C190 250 300 230 390 225 C470 215 530 220 610 230 C720 240 800 238 890 235" fill="none" stroke="#2563eb" stroke-width="5"/><path d="M80 258 C190 250 300 235 390 205 C455 160 500 128 560 155 C625 188 670 235 750 248 C805 255 850 248 890 242" fill="none" stroke="#e11d48" stroke-width="5"/>
+<text x="410" y="360" font-family="sans-serif" font-size="16"
+ fill="#374151">Time from synthetic target onset</text>
+
+</svg>

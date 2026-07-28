@@ -183,8 +183,8 @@
   six-section dashboard, and committed AppTests for evidence labels,
   provenance, corruption, missing files, unsafe paths, and incompatible run
   lineage.
-- Built local empirical bundle `release-77c40f8daae4` from the preserved H1,
-  H2, H3/H4/H5, causal, cluster, and integrated-report artifacts. It remains
+- Built and validated a local empirical bundle from the preserved H1, H2,
+  H3/H4/H5, causal, cluster, and integrated-report artifacts. It remains
   ignored because DERCo redistribution terms are `NOASSERTION`.
 - Corrected author/project/CFF metadata, installed the full Apache-2.0 license
   plus `NOTICE`, improved locked non-root Docker packaging, and added release

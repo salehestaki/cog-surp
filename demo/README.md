@@ -29,5 +29,20 @@ run lineage, scientific status, and SHA-256 for every file. Re-running the
 builder validates and reuses an identical bundle; it never silently overwrites
 a partial or inconsistent directory.
 
+## Dashboard gallery
+
+Every capture below was rendered from the committed synthetic manifest in
+headless Google Chrome at a 1440 × 1000 viewport. The evidence warning is part
+of the application, not an image overlay.
+
+| Section | Screenshot |
+|---|---|
+| Scientific overview | [Open PNG](screenshots/demo-overview.png) |
+| Model surprisal and tokenization | [Open PNG](screenshots/demo-stimuli-model.png) |
+| Human-EEG interface demo | [Open PNG](screenshots/demo-human-eeg.png) |
+| Alignment and model comparison | [Open PNG](screenshots/demo-alignment.png) |
+| Causal assumptions | [Open PNG](screenshots/demo-causal.png) |
+| Release provenance | [Open PNG](screenshots/demo-provenance.png) |
+
 Real EEG and model weights are deliberately excluded from this directory.
 See the repository README for the full empirical reproduction path.
