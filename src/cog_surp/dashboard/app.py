@@ -350,7 +350,7 @@ with provenance:
         {
             "release_id": manifest.release_id,
             "release_label": manifest.label,
-            "manifest": str(bundle.manifest_path),
+            "manifest": manifest_value,
             "git_commit": manifest.git_commit,
             "git_dirty": manifest.git_dirty,
             "project_version": manifest.project_version,
@@ -358,15 +358,19 @@ with provenance:
                 dataset.model_dump(mode="json") for dataset in manifest.datasets
             ],
             "models": [model.model_dump(mode="json") for model in manifest.models],
-            "features": str(features_path.resolve()),
-            "predictive_summary": str(predictive_path.resolve()),
-            "posterior_summary": str(posterior_path.resolve()),
-            "diagnostics": str(diagnostics_path.resolve()),
-            "robustness": str(robustness_path.resolve()),
-            "erp_core_h1": str(h1_path.resolve()),
-            "erp_core_h2": str(h2_path.resolve()),
-            "causal_audit": str(causal_path.resolve()),
-            "exploratory_cluster": str(cluster_path.resolve()),
+            "features": manifest.artifact(ArtifactType.FEATURES).path,
+            "predictive_summary": manifest.artifact(
+                ArtifactType.PREDICTIVE_SUMMARY
+            ).path,
+            "posterior_summary": manifest.artifact(ArtifactType.POSTERIOR_SUMMARY).path,
+            "diagnostics": manifest.artifact(ArtifactType.DIAGNOSTICS).path,
+            "robustness": manifest.artifact(ArtifactType.ROBUSTNESS).path,
+            "erp_core_h1": manifest.artifact(ArtifactType.H1_EFFECT).path,
+            "erp_core_h2": manifest.artifact(ArtifactType.H2_EFFECT).path,
+            "causal_audit": manifest.artifact(ArtifactType.CAUSAL_AUDIT).path,
+            "exploratory_cluster": manifest.artifact(
+                ArtifactType.CLUSTER_METADATA
+            ).path,
             "model_id": str(features["model_id"].iloc[0]),
             "model_revision": str(features["model_revision"].iloc[0]),
             "probability_strategy": str(features["probability_strategy"].iloc[0]),
