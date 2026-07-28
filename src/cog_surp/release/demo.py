@@ -276,6 +276,8 @@ def build_synthetic_demo(
             f"demo output exists without a valid manifest; refusing overwrite: "
             f"{output_dir}"
         )
+    environment = collect_runtime_provenance(project_root)
+    code = environment["code"]
     temporary = output_dir.parent / f".{output_dir.name}.tmp"
     if temporary.exists():
         raise ValueError(f"temporary demo output already exists: {temporary}")
@@ -402,8 +404,6 @@ def build_synthetic_demo(
             path.write_text(svg_value, encoding="utf-8")
             written[artifact_type] = path
 
-        environment = collect_runtime_provenance(project_root)
-        code = environment["code"]
         identity = {
             "schema_version": 1,
             "project_version": __version__,
