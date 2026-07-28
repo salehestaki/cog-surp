@@ -191,18 +191,22 @@ with eeg:
         f"95% CI {effect['ci95_low_uv']:.2f} to {effect['ci95_high_uv']:.2f}",
     )
     st.caption(effect["sign_convention"])
-    figure_columns = st.columns(3)
+    figure_columns = st.columns(2)
     figure_columns[0].image(
         str(erp_root / "grand-average-condition-erp.svg"),
         caption="CPz condition ERPs; negative voltage plotted upward",
+        width="stretch",
     )
     figure_columns[1].image(
         str(erp_root / "grand-average-difference-wave.svg"),
         caption="Unrelated-minus-related difference wave",
+        width="stretch",
     )
-    figure_columns[2].image(
+    _, topomap_column, _ = st.columns([1, 2, 1])
+    topomap_column.image(
         str(erp_root / "n400-difference-topomap.svg"),
         caption="Canonical MNE scalp map, 300-500 ms",
+        width="stretch",
     )
     st.dataframe(participant_qc, width="stretch", hide_index=True)
     st.info(

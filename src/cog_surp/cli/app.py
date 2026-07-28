@@ -133,6 +133,21 @@ def collect_doctor_checks(project_root: Path | None = None) -> list[Check]:
     python_ok = sys.version_info[:2] == (3, 12)
     memory_gib = psutil.virtual_memory().total / 1024**3
     disk_gib = shutil.disk_usage(root).free / 1024**3
+    if disk_gib >= 10:
+        disk_status = "ok"
+        disk_detail = f"{disk_gib:.2f} GiB free at {root}"
+    elif disk_gib >= 2:
+        disk_status = "warning"
+        disk_detail = (
+            f"{disk_gib:.2f} GiB free at {root}; enough for installation and "
+            "CPU fixtures, but real-data/model runs should reserve at least 10 GiB"
+        )
+    else:
+        disk_status = "fail"
+        disk_detail = (
+            f"{disk_gib:.2f} GiB free at {root}; at least 2 GiB is required "
+            "for installation and CPU fixtures"
+        )
     required_paths = ("pyproject.toml", "configs", "artifacts")
     missing = [path for path in required_paths if not (root / path).exists()]
 
@@ -153,8 +168,8 @@ def collect_doctor_checks(project_root: Path | None = None) -> list[Check]:
         ),
         Check(
             "disk",
-            "ok" if disk_gib >= 10 else "fail",
-            f"{disk_gib:.2f} GiB free at {root}",
+            disk_status,
+            disk_detail,
             True,
         ),
         Check(

@@ -87,11 +87,12 @@ Repository: `D:\Saleh`, branch `main`
 
 Integrated report `report-8562aac501a7` consumes the current three-model H2
 and causal artifacts. Final local validation passes: Ruff format/check, strict
-mypy over 45 source files, 54 pytest tests, a six-tab Streamlit AppTest with
+mypy over 45 source files, 57 pytest tests, a six-tab Streamlit AppTest with
 zero exceptions, source/wheel builds, and a base-only isolated wheel
 installation whose machine-readable doctor result is `ok: true`.
 
-The source has a local Git history and ignored raw data, model weights, and
-generated runs remain outside version control. Remote CI execution,
-image-registry publication, and the locally inaccessible Docker engine require
-external infrastructure; they do not block the validated Python release.
+The source has local and public GitHub history; ignored raw data, model weights,
+and generated runs remain outside version control. GitHub Actions exercises the
+locked CPU release gate. Image-registry publication and the locally
+inaccessible Docker engine require external infrastructure; they do not block
+the validated Python release.

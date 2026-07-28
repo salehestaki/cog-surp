@@ -160,3 +160,19 @@
 - Final local release gates pass: Ruff format/check, strict mypy over 45 source
   files, 54 pytest tests, six Streamlit tabs with zero exceptions, source and
   wheel builds, and a base-only isolated wheel doctor check with `ok: true`.
+
+## 2026-07-28
+
+- Rebuilt the public README as an English research landing page with CI and
+  scope badges, exact H1-H5 result summaries, a Mermaid architecture map,
+  collapsible pipelines, and three real screenshots captured from completed
+  dashboard artifacts.
+- Improved the dashboard's EEG figure layout so condition and difference
+  waveforms remain legible at repository-preview widths.
+- Diagnosed the first remote CI failure: all checks passed until `doctor`
+  treated the GitHub runner's 8.22 GiB free disk as a hard failure. Doctor now
+  requires 2 GiB for installation/CPU fixtures, warns below the documented
+  10 GiB real-data recommendation, and has parameterized regression coverage.
+- Final local verification after the presentation/CI update: 57 tests, Ruff,
+  strict mypy, six dashboard tabs, zero Streamlit exceptions, and all local
+  README links pass.
