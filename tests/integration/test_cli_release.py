@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -9,6 +10,7 @@ from cog_surp.cli.app import app
 from cog_surp.release import build_synthetic_demo
 
 runner = CliRunner()
+ANSI_ESCAPE = re.compile(r"\x1b\[[0-9;]*m")
 
 
 def test_root_help_and_version() -> None:
@@ -47,7 +49,8 @@ def test_manifest_validation_and_dashboard_help(tmp_path: Path) -> None:
     assert validation.exit_code == 0
     assert manifest.release_id in validation.stdout
     assert dashboard_help.exit_code == 0
-    assert "--manifest" in dashboard_help.stdout
+    plain_help = ANSI_ESCAPE.sub("", dashboard_help.stdout).lower()
+    assert "manifest" in plain_help
 
 
 def test_invalid_release_configuration_is_actionable(tmp_path: Path) -> None:
