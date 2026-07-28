@@ -5,8 +5,20 @@ description = "Reproducible benchmarking workbench for language-model prediction
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = "Apache-2.0"
-authors = [{ name = "Cog-Surp contributors" }]
-keywords = ["EEG", "N400", "surprisal", "psycholinguistics", "reproducibility"]
+authors = [
+  { name = "Saleh Estaki Organi", email = "salehestaki@gmail.com" },
+]
+maintainers = [
+  { name = "Saleh Estaki Organi", email = "estakiorgani.s@iums.ac.ir" },
+]
+keywords = [
+  "EEG",
+  "N400",
+  "surprisal",
+  "psycholinguistics",
+  "reproducible-research",
+  "research-software",
+]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "License :: OSI Approved :: Apache Software License",
@@ -21,6 +33,13 @@ dependencies = [
   "rich>=14.0",
   "typer>=0.16",
 ]
+
+[project.urls]
+Homepage = "https://github.com/salehestaki/cog-surp"
+Repository = "https://github.com/salehestaki/cog-surp"
+Documentation = "https://github.com/salehestaki/cog-surp#readme"
+Issues = "https://github.com/salehestaki/cog-surp/issues"
+LinkedIn = "https://www.linkedin.com/in/saleh-estaki/"
 
 [project.optional-dependencies]
 data = [

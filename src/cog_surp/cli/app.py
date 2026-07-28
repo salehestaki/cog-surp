@@ -26,6 +26,11 @@ from cog_surp.analysis import (
     evaluate_held_out_models,
     fit_hierarchical_model,
 )
+from cog_surp.cli.release_commands import (
+    dashboard_app,
+    demo_app,
+    register_report_commands,
+)
 from cog_surp.datasets import DERCoAdapter, ERPCoreN400Adapter
 from cog_surp.domain.datasets import DatasetConfig
 from cog_surp.eeg import (
@@ -74,7 +79,6 @@ lm_app = typer.Typer(help="Score observed text with autoregressive language mode
 features_app = typer.Typer(help="Join EEG, stimulus, and computational features.")
 analyze_app = typer.Typer(help="Run hierarchical and held-out analyses.")
 report_app = typer.Typer(help="Generate artifact-driven research reports.")
-dashboard_app = typer.Typer(help="Inspect completed artifacts in Streamlit.")
 provenance_app = typer.Typer(help="Capture release-grade runtime provenance.")
 app.add_typer(datasets_app, name="datasets")
 app.add_typer(eeg_app, name="eeg")
@@ -84,11 +88,29 @@ app.add_typer(features_app, name="features")
 app.add_typer(analyze_app, name="analyze")
 app.add_typer(report_app, name="report")
 app.add_typer(dashboard_app, name="app")
+app.add_typer(demo_app, name="demo")
 app.add_typer(provenance_app, name="provenance")
+register_report_commands(report_app)
+
+
+def _version_callback(value: bool) -> None:
+    if value:
+        typer.echo(__version__)
+        raise typer.Exit()
 
 
 @app.callback()
-def root() -> None:
+def root(
+    version: Annotated[
+        bool,
+        typer.Option(
+            "--version",
+            help="Show the installed Cog-Surp version and exit.",
+            is_eager=True,
+            callback=_version_callback,
+        ),
+    ] = False,
+) -> None:
     """Reproducible surprisal-N400 benchmarking workbench."""
 
 
@@ -1832,18 +1854,6 @@ def report_build(
             sort_keys=True,
         )
     )
-
-
-@dashboard_app.command("run")
-def dashboard_run() -> None:
-    """Launch the artifact-only Streamlit dashboard."""
-    source = Path(__file__).parents[1] / "dashboard" / "app.py"
-    result = subprocess.run(
-        [sys.executable, "-m", "streamlit", "run", str(source)],
-        check=False,
-    )
-    if result.returncode:
-        raise typer.Exit(result.returncode)
 
 
 @provenance_app.command("snapshot")

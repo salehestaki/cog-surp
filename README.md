@@ -30,6 +30,27 @@ causal-LM scoring, naturalistic EEG alignment, and explicit causal auditing.**
 > does not establish that a language model and the human brain implement the
 > same mechanism.
 
+## Two ways to inspect the project
+
+### Quick demo — synthetic, no human evidence
+
+The committed CPU-only demo loads immediately, needs no downloads, and is
+visibly marked **SYNTHETIC TEST/DEMO DATA — NOT HUMAN EVIDENCE** in every
+dashboard section:
+
+```bash
+uv sync --locked --extra all
+uv run cog-surp demo build
+uv run cog-surp app run --manifest demo/bundle/release-manifest.json
+```
+
+### Full empirical pipeline — public EEG and model downloads required
+
+The verified findings and screenshots below come from checksummed real ERP
+CORE and DERCo runs. Raw EEG, model weights, and DERCo derivatives are not
+redistributed. Follow the [reproduction commands](#reproducible-pipelines)
+after reviewing dataset terms and local compute requirements.
+
 ## What Cog-Surp answers
 
 | Question | Estimand | Evidence |
@@ -57,8 +78,10 @@ controlled H2 robustness result only. See
 
 ## Research dashboard
 
-The Streamlit interface reads completed, checksummed artifacts. It never runs
-EEG preprocessing or large-model inference during a page rerun.
+The Streamlit interface validates one immutable release manifest and reads
+only the completed, checksummed artifacts named there. It never discovers
+"latest" files, combines unrelated runs, or runs EEG preprocessing/model
+inference during a page rerun.
 
 ### Real ERP waveforms and prespecified N400 effect
 
@@ -72,7 +95,7 @@ The dashboard also includes stimulus/model inspection, causal assumptions,
 participant QC, exploratory sensor-time statistics, and complete provenance.
 
 ```bash
-uv run cog-surp app run
+uv run cog-surp app run --manifest demo/bundle/release-manifest.json
 ```
 
 ## Why this workbench is different
@@ -108,10 +131,12 @@ flowchart LR
     F --> H[Crossed Bayesian model<br/>participants + items]
     A --> I[Condition-effect DAG<br/>DoWhy refuters]
     E --> I
-    G --> J[Artifact-only dashboard]
+    G --> J[Checksummed artifact storage]
     H --> J
     I --> J
-    J --> K[Traceable research report]
+    J --> K[Unified release manifest]
+    K --> L[Artifact-only dashboard]
+    K --> M[Traceable research report]
 ```
 
 Cog-Surp is a modular monolith with ports-and-adapters boundaries:
@@ -139,6 +164,9 @@ uv sync --locked --extra all
 ```bash
 uv run cog-surp doctor
 uv run pytest
+uv run cog-surp demo build
+uv run cog-surp report validate-manifest \
+  --manifest demo/bundle/release-manifest.json
 ```
 
 ### 3. Explore the CLI
@@ -246,9 +274,10 @@ uv run pytest
 uv run cog-surp doctor --json
 ```
 
-Current local validation covers 57 scientific, unit, integration, and
-reproducibility tests. The package also builds as both an sdist and wheel and
-passes a base-only isolated installation.
+Release validation covers 83 scientific, unit, integration, dashboard,
+manifest-integrity, and reproducibility tests, with no skips or failures. The
+package builds as both an sdist and wheel; both pass isolated installation,
+and the base wheel passes the machine-readable doctor check.
 
 ## Documentation
 
@@ -263,6 +292,8 @@ passes a base-only isolated installation.
 | [Limitations](docs/limitations.md) | Dataset, model, licensing, and inference limits |
 | [Research landscape](docs/research_landscape.md) | Adjacent platforms and technical choices |
 | [Architecture decisions](docs/adr/) | Accepted scientific and engineering decisions |
+| [v0.1.0 release notes](docs/release_notes_v0.1.0.md) | Release changes, migration, gates, limitations |
+| [Release checklist](docs/release_checklist.md) | Evidence-backed verification status |
 
 ## Data and licensing
 
@@ -277,6 +308,10 @@ passes a base-only isolated installation.
 ## Citation
 
 If Cog-Surp supports your work, use the metadata in [`CITATION.cff`](CITATION.cff).
+
+Maintainer: [Saleh Estaki Organi](https://github.com/salehestaki) ·
+[ORCID](https://orcid.org/0009-0002-0642-4384) ·
+[LinkedIn](https://www.linkedin.com/in/saleh-estaki/)
 
 ---
 

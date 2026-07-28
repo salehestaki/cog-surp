@@ -1,7 +1,7 @@
 # Current state
 
-Audit date: 2026-07-27  
-Repository: `D:\Saleh`, branch `main`
+Audit date: 2026-07-28
+Branch: `main`
 
 ## Completed scientific slices
 
@@ -42,8 +42,15 @@ Repository: `D:\Saleh`, branch `main`
 ## Completed engineering and audit layers
 
 - Python 3.12 package, immutable typed configurations, `uv.lock`, CLI,
-  pre-commit, GitHub Actions CI, CPU Dockerfile, and six-tab artifact-only
-  Streamlit dashboard.
+  pre-commit, GitHub Actions CI, non-root CPU Dockerfile, and six-tab
+  artifact-only Streamlit dashboard.
+- The dashboard consumes exactly one validated unified release manifest. The
+  schema checks safe paths, SHA-256 values, artifact types, dataset/model
+  identity, parent artifacts, run lineage, project version, and real,
+  synthetic, or mixed status. There is no "latest artifact" fallback.
+- A deterministic, redistributable 18-artifact synthetic demo exercises every
+  dashboard section without downloads or a GPU and is persistently marked
+  `SYNTHETIC TEST/DEMO DATA — NOT HUMAN EVIDENCE`.
 - Checksummed dataset, EEG, stimulus, LM, feature, predictive, Bayesian,
   causal, robustness, cluster, report, and provenance manifests with parent
   lineage. Cache reuse validates configuration identity and output checksums.
@@ -86,13 +93,18 @@ Repository: `D:\Saleh`, branch `main`
 ## Final release gates
 
 Integrated report `report-8562aac501a7` consumes the current three-model H2
-and causal artifacts. Final local validation passes: Ruff format/check, strict
-mypy over 45 source files, 57 pytest tests, a six-tab Streamlit AppTest with
-zero exceptions, source/wheel builds, and a base-only isolated wheel
-installation whose machine-readable doctor result is `ok: true`.
+and causal artifacts. The coherent local empirical bundle
+`release-77c40f8daae4` contains 18 checksummed current artifacts and renders
+all six Streamlit tabs with `REAL HUMAN EEG` and zero exceptions.
+
+Final local validation passes: Ruff format/check, strict mypy over 50 source
+files, 83 pytest tests with no skips or failures, source/wheel builds, isolated
+wheel and sdist installations, and a base-only wheel machine-readable doctor
+result of `ok: true`. The committed synthetic demo and CI validation are part
+of the release gate.
 
 The source has local and public GitHub history; ignored raw data, model weights,
 and generated runs remain outside version control. GitHub Actions exercises the
 locked CPU release gate. Image-registry publication and the locally
 inaccessible Docker engine require external infrastructure; they do not block
-the validated Python release.
+the validated Python release, and no Docker-validated claim is made.

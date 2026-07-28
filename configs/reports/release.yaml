@@ -1,0 +1,228 @@
+schema_version: 1
+project_version: 0.1.0
+label: Cog-Surp verified empirical release bundle
+data_status: real
+datasets:
+  - dataset_id: erp-core-n400
+    version: "2021-public-osf"
+    sha256: 366f22ab867ddfde36617c175968f0b0f26e4d8d5f97345bef3220a11b159127
+    data_status: real
+    citation: "Kappenman et al. (2021), ERP CORE, NeuroImage 225:117465. Public source terms are handled conservatively as CC BY-SA 4.0."
+  - dataset_id: derco
+    version: "osf-article-0"
+    sha256: 1adf4104338d1a3086539e2b22ea7126204fd21ae7e37585646ec658b2f1a9f6
+    data_status: real
+    citation: "Hendrix et al., DERCo naturalistic reading EEG. Dataset license is NOASSERTION; derivatives remain local."
+models:
+  - model_id: HuggingFaceTB/SmolLM2-135M
+    revision: 93efa2f097d58c2a74874c7e644dbc9b0cee75a2
+    tokenizer_revision: 93efa2f097d58c2a74874c7e644dbc9b0cee75a2
+    scoring_run_ids:
+      - lm-cpu-smoke-1ec20045d244
+      - lm-cpu-smoke-604c335e7059
+  - model_id: openai-community/gpt2
+    revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+    tokenizer_revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+    scoring_run_ids:
+      - lm-legacy-anchor-9ece41a7e55c
+  - model_id: Qwen/Qwen2.5-0.5B
+    revision: 060db6499f32faf8b98477b0a26969ef7d8b9987
+    tokenizer_revision: 060db6499f32faf8b98477b0a26969ef7d8b9987
+    scoring_run_ids:
+      - lm-cross-family-59b0da516c20
+runs:
+  preprocessing_run_id: eeg-cohort-f1a3d5d14adf
+  feature_run_id: features-6d5396814051
+  lm_scoring_run_ids:
+    - lm-cpu-smoke-1ec20045d244
+    - lm-cpu-smoke-604c335e7059
+    - lm-legacy-anchor-9ece41a7e55c
+    - lm-cross-family-59b0da516c20
+  statistical_analysis_run_ids:
+    - predictive-de8598f91332
+    - analysis-9a5dad267c7d
+    - robustness-aec7439fdaf4
+    - model-effect-67ae1006277c
+    - cluster-f12050fd8fb7
+  causal_analysis_run_ids:
+    - causal-c64c675e26f9
+  report_run_id: report-8562aac501a7
+parent_artifact_ids:
+  - derco-features
+  - erp-h1-effect
+  - erp-h2-effect
+  - condition-causal-audit
+artifacts:
+  - artifact_id: derco-lm-surprisal
+    artifact_type: lm-surprisal
+    source_path: artifacts/runs/lm-cpu-smoke-1ec20045d244/surprisal.parquet
+    data_status: real
+    source_run_id: lm-cpu-smoke-1ec20045d244
+    dataset_id: derco
+    model_id: HuggingFaceTB/SmolLM2-135M
+    label: DERCo article-0 exact SmolLM2 surprisal
+  - artifact_id: derco-features
+    artifact_type: features
+    source_path: artifacts/runs/features-6d5396814051/features.parquet
+    data_status: real
+    source_run_id: features-6d5396814051
+    parent_artifact_ids: [derco-lm-surprisal]
+    parent_run_ids: [lm-cpu-smoke-1ec20045d244]
+    dataset_id: derco
+    model_id: HuggingFaceTB/SmolLM2-135M
+    label: DERCo authoritative participant-word feature table
+  - artifact_id: derco-predictive
+    artifact_type: predictive-summary
+    source_path: artifacts/runs/predictive-de8598f91332/held-out-summary.parquet
+    data_status: real
+    source_run_id: predictive-de8598f91332
+    parent_artifact_ids: [derco-features]
+    parent_run_ids: [features-6d5396814051]
+    dataset_id: derco
+    label: DERCo grouped held-out predictive summary
+  - artifact_id: derco-posterior
+    artifact_type: posterior-summary
+    source_path: artifacts/runs/analysis-9a5dad267c7d/posterior-summary.parquet
+    data_status: real
+    source_run_id: analysis-9a5dad267c7d
+    parent_artifact_ids: [derco-features]
+    parent_run_ids: [features-6d5396814051]
+    dataset_id: derco
+    label: DERCo crossed-model posterior summary
+  - artifact_id: derco-diagnostics
+    artifact_type: diagnostics
+    source_path: artifacts/runs/analysis-9a5dad267c7d/diagnostics.json
+    data_status: real
+    source_run_id: analysis-9a5dad267c7d
+    parent_artifact_ids: [derco-features]
+    parent_run_ids: [features-6d5396814051]
+    dataset_id: derco
+    label: DERCo posterior diagnostics
+  - artifact_id: derco-robustness
+    artifact_type: robustness
+    source_path: artifacts/runs/robustness-aec7439fdaf4/model-comparison.parquet
+    data_status: real
+    source_run_id: robustness-aec7439fdaf4
+    parent_artifact_ids: [derco-features]
+    parent_run_ids: [features-6d5396814051]
+    dataset_id: derco
+    label: DERCo SmolLM2 and GPT-2 robustness
+  - artifact_id: erp-h1-effect
+    artifact_type: h1-effect
+    source_path: artifacts/runs/eeg-cohort-f1a3d5d14adf/eeg/cohort/h1-condition-effect.json
+    data_status: real
+    source_run_id: eeg-cohort-f1a3d5d14adf
+    dataset_id: erp-core-n400
+    label: ERP CORE primary N400 condition effect
+  - artifact_id: erp-condition-erp
+    artifact_type: h1-condition-erp
+    source_path: artifacts/runs/eeg-cohort-f1a3d5d14adf/eeg/cohort/grand-average-condition-erp.svg
+    data_status: real
+    source_run_id: eeg-cohort-f1a3d5d14adf
+    dataset_id: erp-core-n400
+    label: ERP CORE grand-average condition ERPs
+  - artifact_id: erp-difference-wave
+    artifact_type: h1-difference-wave
+    source_path: artifacts/runs/eeg-cohort-f1a3d5d14adf/eeg/cohort/grand-average-difference-wave.svg
+    data_status: real
+    source_run_id: eeg-cohort-f1a3d5d14adf
+    dataset_id: erp-core-n400
+    label: ERP CORE unrelated-minus-related difference wave
+  - artifact_id: erp-topomap
+    artifact_type: h1-topomap
+    source_path: artifacts/runs/eeg-cohort-f1a3d5d14adf/eeg/cohort/n400-difference-topomap.svg
+    data_status: real
+    source_run_id: eeg-cohort-f1a3d5d14adf
+    dataset_id: erp-core-n400
+    label: ERP CORE 300-500 ms scalp map
+  - artifact_id: erp-participant-qc
+    artifact_type: h1-participant-qc
+    source_path: artifacts/runs/eeg-cohort-f1a3d5d14adf/eeg/cohort/participant-qc.parquet
+    data_status: real
+    source_run_id: eeg-cohort-f1a3d5d14adf
+    dataset_id: erp-core-n400
+    label: ERP CORE versioned participant QC
+  - artifact_id: erp-h2-effect
+    artifact_type: h2-effect
+    source_path: artifacts/runs/model-effect-67ae1006277c/h2-model-effect.json
+    data_status: real
+    source_run_id: model-effect-67ae1006277c
+    parent_run_ids:
+      - lm-cpu-smoke-604c335e7059
+      - lm-legacy-anchor-9ece41a7e55c
+      - lm-cross-family-59b0da516c20
+    dataset_id: erp-core-n400
+    label: Three-model matched ERP CORE stimulus effect
+  - artifact_id: condition-causal-audit
+    artifact_type: causal-audit
+    source_path: artifacts/runs/causal-c64c675e26f9/causal-condition-effects.json
+    data_status: real
+    source_run_id: causal-c64c675e26f9
+    parent_run_ids:
+      - eeg-cohort-f1a3d5d14adf
+      - lm-cpu-smoke-604c335e7059
+      - lm-legacy-anchor-9ece41a7e55c
+      - lm-cross-family-59b0da516c20
+    dataset_id: erp-core-n400
+    label: Separate condition-to-EEG and condition-to-model audit
+  - artifact_id: condition-causal-graph
+    artifact_type: causal-graph
+    source_path: artifacts/runs/causal-c64c675e26f9/causal-graph.svg
+    data_status: real
+    source_run_id: causal-c64c675e26f9
+    parent_run_ids:
+      - eeg-cohort-f1a3d5d14adf
+      - lm-cpu-smoke-604c335e7059
+      - lm-legacy-anchor-9ece41a7e55c
+      - lm-cross-family-59b0da516c20
+    dataset_id: erp-core-n400
+    label: Causal assumptions graph with no LM-to-EEG edge
+  - artifact_id: cluster-metadata
+    artifact_type: cluster-metadata
+    source_path: artifacts/runs/cluster-f12050fd8fb7/cluster-metadata.json
+    data_status: real
+    source_run_id: cluster-f12050fd8fb7
+    parent_run_ids: [eeg-cohort-f1a3d5d14adf]
+    dataset_id: erp-core-n400
+    label: Exploratory sensor-time cluster metadata
+  - artifact_id: cluster-summary
+    artifact_type: cluster-summary
+    source_path: artifacts/runs/cluster-f12050fd8fb7/cluster-summary.parquet
+    data_status: real
+    source_run_id: cluster-f12050fd8fb7
+    parent_run_ids: [eeg-cohort-f1a3d5d14adf]
+    dataset_id: erp-core-n400
+    label: Exploratory sensor-time cluster summary
+  - artifact_id: cluster-figure
+    artifact_type: cluster-figure
+    source_path: artifacts/runs/cluster-f12050fd8fb7/sensor-time-t-statistic.svg
+    data_status: real
+    source_run_id: cluster-f12050fd8fb7
+    parent_run_ids: [eeg-cohort-f1a3d5d14adf]
+    dataset_id: erp-core-n400
+    label: Exploratory sensor-time statistic
+  - artifact_id: integrated-report
+    artifact_type: report
+    source_path: artifacts/runs/report-8562aac501a7/research-report.md
+    data_status: real
+    source_run_id: report-8562aac501a7
+    parent_artifact_ids:
+      - derco-features
+      - erp-h1-effect
+      - erp-h2-effect
+      - condition-causal-audit
+    label: Integrated empirical research report
+resolved_configuration_paths:
+  erp-core-primary: configs/eeg/erp_core_primary.yaml
+  erp-core-cluster: configs/eeg/erp_core_cluster.yaml
+  derco-primary: configs/analyses/derco_primary.yaml
+  model-matrix: configs/models/model_matrix.yaml
+citations:
+  - "Kappenman et al. (2021), ERP CORE, NeuroImage 225:117465."
+  - "Hendrix et al., DERCo naturalistic reading EEG resource."
+  - "Cog-Surp software, version 0.1.0."
+known_limitations:
+  - DERCo has no declared dataset license; this local real-data bundle must not be redistributed.
+  - The posterior LM-surprisal coefficient is conditional association, not a causal model-to-brain effect.
+  - Held-out predictive gains are weak and mean held-out R-squared remains near zero.
+  - The sensor-time cluster analysis is exploratory and does not identify exact onset or neural sources.

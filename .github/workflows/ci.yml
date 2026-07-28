@@ -22,4 +22,7 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run mypy
       - run: uv run pytest --cov --cov-report=term-missing
+      - run: uv run cog-surp demo build
+      - run: uv run cog-surp report validate-manifest --manifest demo/bundle/release-manifest.json
+      - run: uv build
       - run: uv run cog-surp doctor --json

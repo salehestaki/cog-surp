@@ -2,7 +2,7 @@
 
 ## 2026-07-27
 
-- Inspected the empty `D:\Saleh` workspace: it was not a Git repository and
+- Inspected the initial local workspace: it was not a Git repository and
   contained no project files or local `AGENTS.md`.
 - Recorded Windows 10 (64-bit), 15.74 GB RAM (0.93 GB free at inspection),
   313.26 GB free on drive D, no detected NVIDIA tooling, no installed Python,
@@ -176,3 +176,20 @@
 - Final local verification after the presentation/CI update: 57 tests, Ruff,
   strict mypy, six dashboard tabs, zero Streamlit exceptions, and all local
   README links pass.
+- Added an authoritative release-manifest schema and immutable bundle builder;
+  the dashboard now reads one checksummed artifact family and has no
+  modification-time discovery fallback.
+- Added a deterministic 18-artifact synthetic public demo, manifest-only
+  six-section dashboard, and committed AppTests for evidence labels,
+  provenance, corruption, missing files, unsafe paths, and incompatible run
+  lineage.
+- Built local empirical bundle `release-77c40f8daae4` from the preserved H1,
+  H2, H3/H4/H5, causal, cluster, and integrated-report artifacts. It remains
+  ignored because DERCo redistribution terms are `NOASSERTION`.
+- Corrected author/project/CFF metadata, installed the full Apache-2.0 license
+  plus `NOTICE`, improved locked non-root Docker packaging, and added release
+  notes/checklist/changelog.
+- v0.1.0 Python release gates pass: 83 tests with no skips or failures, Ruff,
+  strict mypy over 50 source files, wheel/sdist builds, isolated installs, and
+  base-wheel doctor. Docker daemon access remains externally pending and is
+  not claimed as validated.

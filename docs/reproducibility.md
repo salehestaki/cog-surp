@@ -55,13 +55,30 @@ effect on EEG.
 ## CPU container
 
 The root `Dockerfile` installs Python 3.12.13, uv 0.11.32, and the committed
-lock without development dependencies. Build and run the environment check:
+lock, then runs as an unprivileged user. It includes only repository source,
+configuration, tests, documentation metadata, and the synthetic demo—never
+raw EEG, model caches, credentials, or local scientific artifacts.
+
+Build and run the offline smoke sequence:
 
 ```bash
 docker build -t cog-surp:cpu .
-docker run --rm cog-surp:cpu doctor
+docker run --rm cog-surp:cpu
+docker run --rm cog-surp:cpu --help
+docker run --rm --entrypoint pytest cog-surp:cpu \
+  tests/unit/test_release_manifest.py -q
+docker run --rm cog-surp:cpu report validate-manifest \
+  --manifest demo/bundle/release-manifest.json
+docker run --rm -p 8501:8501 cog-surp:cpu app run \
+  --manifest demo/bundle/release-manifest.json
 ```
 
-Mount `data` and `artifacts` explicitly for real workflows. DERCo remains
-non-redistributable. A CUDA image is not claimed because this host has no GPU
-and the CUDA inference path has not been validated.
+Open `http://localhost:8501` for the final command. Mount `data` and
+`artifacts` explicitly for real workflows. DERCo remains non-redistributable.
+A CUDA image is not claimed because this host has no GPU and the CUDA
+inference path has not been validated.
+
+On 2026-07-28 the local Docker client could not access the Windows named-pipe
+daemon, so these exact image commands remain externally pending. The
+Dockerfile is provided and statically reviewed; this repository does not claim
+the image is Docker-validated until those commands succeed.

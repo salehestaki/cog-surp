@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -10,21 +11,12 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-
-def _latest(pattern: str) -> Path | None:
-    candidates = list(Path("artifacts/runs").glob(pattern))
-    return (
-        max(candidates, key=lambda path: path.stat().st_mtime) if candidates else None
-    )
-
-
-def _path_input(label: str, default: Path | None) -> Path:
-    value = st.sidebar.text_input(label, str(default or ""))
-    path = Path(value)
-    if not value or not path.exists():
-        st.error(f"Artifact not found: {value}")
-        st.stop()
-    return path
+from cog_surp.dashboard.bundle import (
+    global_status_message,
+    load_dashboard_bundle,
+    panel_status_message,
+)
+from cog_surp.release import ArtifactType, DataStatus, ManifestValidationError
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -39,48 +31,44 @@ st.title("Cog-Surp")
 st.caption(
     "Reproducible benchmarking of model prediction measures and human N400 responses"
 )
-st.success("REAL EEG · ERP CORE controlled H1 and DERCo article-0 alignment")
+default_manifest = os.environ.get(
+    "COG_SURP_MANIFEST",
+    str(Path("demo") / "bundle" / "release-manifest.json"),
+)
+manifest_value = st.sidebar.text_input("Release manifest", default_manifest)
+try:
+    bundle = load_dashboard_bundle(Path(manifest_value))
+except ManifestValidationError as error:
+    st.error(
+        "Release manifest validation failed. Select a coherent manifest created "
+        f"by `cog-surp report manifest`: {error}"
+    )
+    st.stop()
+
+manifest = bundle.manifest
+artifacts = bundle.artifacts
+status_message = global_status_message(manifest.data_status)
+if manifest.data_status is DataStatus.REAL:
+    st.success(status_message)
+elif manifest.data_status is DataStatus.SYNTHETIC:
+    st.error(status_message)
+else:
+    st.warning(status_message)
+st.caption(f"Active release: `{manifest.release_id}` · {manifest.label}")
 st.warning(
     "Predictive/explanatory alignment only—no mechanistic or neurobiological "
     "homology claim."
 )
 
-features_path = _path_input(
-    "Features",
-    _latest("features-*/features.parquet"),
-)
-predictive_path = _path_input(
-    "Held-out summary",
-    _latest("predictive-*/held-out-summary.parquet"),
-)
-posterior_path = _path_input(
-    "Posterior summary",
-    _latest("analysis-*/posterior-summary.parquet"),
-)
-diagnostics_path = _path_input(
-    "Diagnostics",
-    _latest("analysis-*/diagnostics.json"),
-)
-robustness_path = _path_input(
-    "Cross-model robustness",
-    _latest("robustness-*/model-comparison.parquet"),
-)
-h1_path = _path_input(
-    "ERP CORE H1 estimate",
-    _latest("eeg-cohort-*/eeg/cohort/h1-condition-effect.json"),
-)
-h2_path = _path_input(
-    "ERP CORE H2 estimate",
-    _latest("model-effect-*/h2-model-effect.json"),
-)
-causal_path = _path_input(
-    "Real-data causal audit",
-    _latest("causal-*/causal-condition-effects.json"),
-)
-cluster_path = _path_input(
-    "Exploratory sensor-time metadata",
-    _latest("cluster-*/cluster-metadata.json"),
-)
+features_path = artifacts[ArtifactType.FEATURES]
+predictive_path = artifacts[ArtifactType.PREDICTIVE_SUMMARY]
+posterior_path = artifacts[ArtifactType.POSTERIOR_SUMMARY]
+diagnostics_path = artifacts[ArtifactType.DIAGNOSTICS]
+robustness_path = artifacts[ArtifactType.ROBUSTNESS]
+h1_path = artifacts[ArtifactType.H1_EFFECT]
+h2_path = artifacts[ArtifactType.H2_EFFECT]
+causal_path = artifacts[ArtifactType.CAUSAL_AUDIT]
+cluster_path = artifacts[ArtifactType.CLUSTER_METADATA]
 
 features = pd.read_parquet(features_path)
 predictive = pd.read_parquet(predictive_path)
@@ -91,9 +79,8 @@ h1 = _load_json(h1_path)
 h2 = _load_json(h2_path)
 causal_audit = _load_json(causal_path)
 cluster_metadata = _load_json(cluster_path)
-cluster_summary = pd.read_parquet(cluster_path.parent / "cluster-summary.parquet")
-erp_root = h1_path.parent
-participant_qc = pd.read_parquet(erp_root / "participant-qc.parquet")
+cluster_summary = pd.read_parquet(artifacts[ArtifactType.CLUSTER_SUMMARY])
+participant_qc = pd.read_parquet(artifacts[ArtifactType.H1_PARTICIPANT_QC])
 
 overview, stimuli, eeg, alignment, causal, provenance = st.tabs(
     [
@@ -107,6 +94,16 @@ overview, stimuli, eeg, alignment, causal, provenance = st.tabs(
 )
 
 with overview:
+    st.caption(
+        panel_status_message(
+            manifest,
+            {
+                ArtifactType.FEATURES,
+                ArtifactType.DIAGNOSTICS,
+                ArtifactType.H1_EFFECT,
+            },
+        )
+    )
     columns = st.columns(5)
     columns[0].metric("Participants", features["participant"].nunique())
     columns[1].metric("Items", features["item"].nunique())
@@ -126,6 +123,12 @@ with overview:
     )
 
 with stimuli:
+    st.caption(
+        panel_status_message(
+            manifest,
+            {ArtifactType.H2_EFFECT, ArtifactType.FEATURES},
+        )
+    )
     st.subheader("ERP CORE matched-target model condition effects")
     h2_columns = st.columns(len(h2["models"]))
     for column, model in zip(h2_columns, h2["models"], strict=True):
@@ -178,6 +181,19 @@ with stimuli:
     )
 
 with eeg:
+    st.caption(
+        panel_status_message(
+            manifest,
+            {
+                ArtifactType.H1_EFFECT,
+                ArtifactType.H1_CONDITION_ERP,
+                ArtifactType.H1_DIFFERENCE_WAVE,
+                ArtifactType.H1_TOPOMAP,
+                ArtifactType.CLUSTER_METADATA,
+                ArtifactType.FEATURES,
+            },
+        )
+    )
     st.subheader("ERP CORE controlled condition effect")
     effect = h1["primary_rule_based_cohort"]
     counts = h1["participant_counts"]
@@ -193,18 +209,18 @@ with eeg:
     st.caption(effect["sign_convention"])
     figure_columns = st.columns(2)
     figure_columns[0].image(
-        str(erp_root / "grand-average-condition-erp.svg"),
+        str(artifacts[ArtifactType.H1_CONDITION_ERP]),
         caption="CPz condition ERPs; negative voltage plotted upward",
         width="stretch",
     )
     figure_columns[1].image(
-        str(erp_root / "grand-average-difference-wave.svg"),
+        str(artifacts[ArtifactType.H1_DIFFERENCE_WAVE]),
         caption="Unrelated-minus-related difference wave",
         width="stretch",
     )
     _, topomap_column, _ = st.columns([1, 2, 1])
     topomap_column.image(
-        str(erp_root / "n400-difference-topomap.svg"),
+        str(artifacts[ArtifactType.H1_TOPOMAP]),
         caption="Canonical MNE scalp map, 300-500 ms",
         width="stretch",
     )
@@ -216,7 +232,7 @@ with eeg:
     )
     st.subheader("Exploratory sensor-time analysis")
     st.image(
-        str(cluster_path.parent / "sensor-time-t-statistic.svg"),
+        str(artifacts[ArtifactType.CLUSTER_FIGURE]),
         caption="Sensor-time t statistics; cluster inference is exploratory",
     )
     st.caption(cluster_metadata["interpretation_boundary"])
@@ -249,6 +265,16 @@ with eeg:
     )
 
 with alignment:
+    st.caption(
+        panel_status_message(
+            manifest,
+            {
+                ArtifactType.PREDICTIVE_SUMMARY,
+                ArtifactType.POSTERIOR_SUMMARY,
+                ArtifactType.ROBUSTNESS,
+            },
+        )
+    )
     st.subheader("Held-out performance")
     st.dataframe(predictive, width="stretch", hide_index=True)
     st.subheader("Cross-model robustness")
@@ -286,8 +312,14 @@ with alignment:
     st.plotly_chart(figure, width="stretch")
 
 with causal:
+    st.caption(
+        panel_status_message(
+            manifest,
+            {ArtifactType.CAUSAL_AUDIT, ArtifactType.CAUSAL_GRAPH},
+        )
+    )
     st.image(
-        str(causal_path.parent / "causal-graph.svg"),
+        str(artifacts[ArtifactType.CAUSAL_GRAPH]),
         caption="Versioned conceptual DAG; no model-surprisal-to-EEG edge",
     )
     st.subheader("Identified condition effects and refuters")
@@ -308,8 +340,24 @@ with causal:
     )
 
 with provenance:
+    st.caption(
+        panel_status_message(
+            manifest,
+            {ArtifactType.REPORT},
+        )
+    )
     st.json(
         {
+            "release_id": manifest.release_id,
+            "release_label": manifest.label,
+            "manifest": str(bundle.manifest_path),
+            "git_commit": manifest.git_commit,
+            "git_dirty": manifest.git_dirty,
+            "project_version": manifest.project_version,
+            "datasets": [
+                dataset.model_dump(mode="json") for dataset in manifest.datasets
+            ],
+            "models": [model.model_dump(mode="json") for model in manifest.models],
             "features": str(features_path.resolve()),
             "predictive_summary": str(predictive_path.resolve()),
             "posterior_summary": str(posterior_path.resolve()),
@@ -322,6 +370,7 @@ with provenance:
             "model_id": str(features["model_id"].iloc[0]),
             "model_revision": str(features["model_revision"].iloc[0]),
             "probability_strategy": str(features["probability_strategy"].iloc[0]),
-            "data_status": "real",
+            "data_status": manifest.data_status.value,
+            "known_limitations": manifest.known_limitations,
         }
     )
